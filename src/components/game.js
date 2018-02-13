@@ -11,6 +11,7 @@ export default class Game extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
+            descOrder: false,
         };
     }
 
@@ -49,16 +50,11 @@ export default class Game extends React.Component {
             const desc = move ?
                 'Go to move #' + move + " " + step.play:
                 'Go to game start';
-            if(move === this.state.stepNumber)
-                return(
-                    <li key={move}>
-                        <button onClick={() => this.jumpTo(move)}><mark>{desc}</mark></button>
-                    </li>
-                );
-            else
-            return (
+            return(
                 <li key={move}>
-                    <button onClick={() => this.jumpTo(move)}>{desc}</button>
+                    <button onClick={() => this.jumpTo(move)}>
+                        {move === this.state.stepNumber ? (<mark>{desc}</mark>) : desc}
+                    </button>
                 </li>
             );
         });
@@ -80,7 +76,10 @@ export default class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
-                    <ol>{moves}</ol>
+                    {this.state.descOrder ? (<ol reversed>{moves.reverse()}</ol>) : (<ol>{moves}</ol>)}
+                </div>
+                <div>
+                    <button onClick={() => this.setState({descOrder: !this.state.descOrder})}>Reverse order</button>
                 </div>
             </div>
         );
